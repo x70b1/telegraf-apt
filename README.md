@@ -63,17 +63,21 @@ Returns the number of outstanding security updates.
 ##### updates_severity
 
 Returns an integer indicator as summary.
-For still supported but older releases (oldstable) the security update detection does not work.
 
 ```
 0   =  full Debian support, no updates
-1   =  full Debian support, one or more regular update
-2   =  full Debian support, one or more security update
-3   =  full Debian support, one or more regular update and one or more security update
+
+1   =  full Debian support, one or more regular updates
+2   =  full Debian support, one or more security updates
+3   =  full Debian support, one or more regular updates and one or more security updates
 
 10  =  LTS, no updates
-11  =  LTS, one or more update
+11  =  LTS, one or more regular updates
+12  =  LTS, one or more security updates
+13  =  LTS, one or more regular updates and one or more security updates
 
 20  =  outdated, no updates
-21  =  outdated, one or more update
+21  =  outdated, one or more regular updates
+22  =  outdated, one or more security updates
+23  =  outdated, one or more regular updates and one or more security updates
 ```
