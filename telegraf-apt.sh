@@ -4,8 +4,8 @@ release_string=$(cat /etc/debian_version)
 release_status=$(curl -sf https://wiki.debian.org/LTS | grep "$(echo "Debian $release_string" | cut -d '.' -f 1)")
 release_support=2
 
-updates_regular=$(apt list -qq --upgradable 2> /dev/null | grep -c -v "security")
-updates_security=$(apt list -qq --upgradable 2> /dev/null | grep -c "security")
+updates_regular=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c -v Security)
+updates_security=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c Security)
 
 if echo "$release_status" | grep -q "#98fb98"; then
     release_support=0
