@@ -30,7 +30,7 @@ You can use `unattended-upgrades` to run `apt update` on a regular basis.
 ```
 sh /opt/telegraf/telegraf-apt.sh
 apt debian_release="11.2"
-apt debian_codename="bullseye"
+apt debian_codename="Bullseye"
 apt debian_support=0
 apt updates_regular=0
 apt updates_security=1
@@ -47,7 +47,7 @@ Returns the release from `/etc/debian_version`.
 
 ##### debian_codename
 
-Returns a codename like `bullseye`, `buster` ...
+Returns a codename like `Bullseye`, `Buster` ...
 
 
 ##### debian_support
