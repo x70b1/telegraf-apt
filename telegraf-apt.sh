@@ -1,7 +1,7 @@
 #!/bin/sh
 
 release_version=$(cat /etc/debian_version)
-release_codename=$(lsb_release -s -c)
+release_codename=$(lsb_release -s -c | sed 's/^[a-z]/\U&/g')
 release_status=$(curl -sf https://wiki.debian.org/LTS | grep "$(echo "Debian $release_version" | cut -d '.' -f 1)")
 release_support=2
 
