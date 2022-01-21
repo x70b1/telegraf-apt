@@ -1,1 +1,79 @@
 # telegraf-apt
+
+A telegraf plugin to check Debian for package updates.
+
+The debian website is queried to check the LTS status.
+For this `curl` is required as a dependency.
+
+To make this script useful you need a way to keep your package sources up to date.
+You can use `unattended-upgrades` to run `apt update` on a regular basis.
+
+
+## Configuration
+
+```
+[[inputs.exec]]
+  command = "sh /opt/telegraf/telegraf-apt.sh"
+  data_format = "influx"
+
+  interval = "1h"
+```
+
+
+## Output
+
+```
+sh /opt/telegraf/telegraf-apt.sh
+apt debian_release="11.2"
+apt debian_support=0
+apt updates_regular=0
+apt updates_security=1
+apt updates_severity=2
+```
+
+
+## How to read
+
+##### debian_release
+
+Returns the version info from `/etc/debian_version`.
+
+
+##### debian_support
+
+Returns the current support status of your system.
+
+```
+0   =  full support with official security fixes
+1   =  LTS with limitied security support
+2   =  outdated
+```
+
+
+##### updates_regular
+
+Returns the number of outstanding regular updates.
+
+
+##### updates_security
+
+Returns the number of outstanding security updates.
+
+
+##### updates_severity
+
+Returns an integer indicator as summary.
+For still supported but older releases (oldstable) the security update detection does not work.
+
+```
+0   =  full Debian support, no updates
+1   =  full Debian support, one or more regular update
+2   =  full Debian support, one or more security update
+3   =  full Debian support, one or more regular update and one or more security update
+
+10  =  LTS, no updates
+11  =  LTS, one or more update
+
+20  =  outdated, no updates
+21  =  outdated, one or more update
+```
