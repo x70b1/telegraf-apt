@@ -1,7 +1,8 @@
 #!/bin/sh
 
-release_string=$(cat /etc/debian_version)
-release_status=$(curl -sf https://wiki.debian.org/LTS | grep "$(echo "Debian $release_string" | cut -d '.' -f 1)")
+release_version=$(cat /etc/debian_version)
+release_codename=$(lsb_release -s -c)
+release_status=$(curl -sf https://wiki.debian.org/LTS | grep "$(echo "Debian $release_version" | cut -d '.' -f 1)")
 release_support=2
 
 updates_regular=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c -v Security)
@@ -24,7 +25,8 @@ else
 fi
 
 
-echo "apt debian_release=\"$release_string\""
+echo "apt debian_release=\"$release_version\""
+echo "apt debian_codename=\"$release_codename\""
 echo "apt debian_support=$release_support"
 echo "apt updates_regular=$updates_regular"
 echo "apt updates_security=$updates_security"
