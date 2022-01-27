@@ -4,7 +4,6 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/graphs/contributors)
 [![license](https://img.shields.io/github/license/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/blob/master/LICENSE)
 
-
 A telegraf plugin to check Debian for package updates.
 
 The debian website is queried to check the LTS status.
