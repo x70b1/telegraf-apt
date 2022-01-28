@@ -27,7 +27,7 @@ You can use `unattended-upgrades` to run `apt update` on a regular basis.
 ## Output
 
 ```
-sh /opt/telegraf/telegraf-apt.sh
+# sh /opt/telegraf/telegraf-apt.sh
 apt debian_release="11.2"
 apt debian_codename="Bullseye"
 apt debian_support=0
