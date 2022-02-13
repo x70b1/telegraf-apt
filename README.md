@@ -21,6 +21,7 @@ You can use `unattended-upgrades` to run `apt update` on a regular basis.
   data_format = "influx"
 
   interval = "1h"
+  timeout = "20s"
 ```
 
 
