@@ -4,13 +4,17 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/graphs/contributors)
 [![license](https://img.shields.io/github/license/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/blob/master/LICENSE)
 
-A Telegraf plugin to check Debian for package updates.
+A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for package updates.
 
-The debian website is queried to check the LTS status.
-For this `curl` is required as a dependency.
+The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
 
 To make this script useful you need a way to keep your package sources up to date.
 You can use `unattended-upgrades` to run `apt update` on a regular basis.
+
+
+## Dependencies
+
+* `curl`
 
 
 ## Configuration
@@ -21,7 +25,7 @@ You can use `unattended-upgrades` to run `apt update` on a regular basis.
   data_format = "influx"
 
   interval = "1h"
-  timeout = "20s"
+  timeout = "30s"
 ```
 
 
