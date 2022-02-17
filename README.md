@@ -8,9 +8,6 @@ A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for 
 
 The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
 
-To make this script useful you need a way to keep your package sources up to date.
-You can use `unattended-upgrades` to run `apt update` on a regular basis.
-
 
 ## Dependencies
 
@@ -18,6 +15,11 @@ You can use `unattended-upgrades` to run `apt update` on a regular basis.
 
 
 ## Configuration
+
+To make this script useful you need a way to keep your package sources up to date.
+You can use `unattended-upgrades` to run `apt update` on a regular basis.
+
+Telegraf can be configured like this:
 
 ```
 [[inputs.exec]]
