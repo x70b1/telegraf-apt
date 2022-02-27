@@ -9,19 +9,16 @@ A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for 
 The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
 
 
-## Dependencies
-
-* `curl`
-
-
 ## Configuration
+
+Install `curl`.
 
 To make this script useful you need a way to keep your package sources up to date.
 You can use `unattended-upgrades` to run `apt update` on a regular basis.
 
 Telegraf can be configured like this:
 
-```
+```ini
 [[inputs.exec]]
   command = "sh /opt/telegraf/telegraf-apt.sh"
   data_format = "influx"
@@ -33,7 +30,7 @@ Telegraf can be configured like this:
 
 ## Output
 
-```
+```sh
 # sh /opt/telegraf/telegraf-apt.sh
 apt debian_release="11.2"
 apt debian_codename="Bullseye"
@@ -46,17 +43,17 @@ apt updates_severity=2
 
 ## How to read
 
-##### debian_release
+**debian_release**
 
 Returns the release from `/etc/debian_version`.
 
 
-##### debian_codename
+**debian_codename**
 
 Returns a codename like `Bullseye`, `Buster` ...
 
 
-##### debian_support
+**debian_support**
 
 Returns the current support status of your system.
 
@@ -67,17 +64,17 @@ Returns the current support status of your system.
 ```
 
 
-##### updates_regular
+**updates_regular**
 
 Returns the number of outstanding regular updates.
 
 
-##### updates_security
+**updates_security**
 
 Returns the number of outstanding security updates.
 
 
-##### updates_severity
+**updates_severity**
 
 Returns an integer indicator as summary.
 
