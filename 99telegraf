@@ -1,0 +1,2 @@
+
+APT::Update::Post-Invoke {"sh /opt/telegraf/telegraf-apt.sh --update";

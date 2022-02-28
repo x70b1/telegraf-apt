@@ -6,6 +6,8 @@
 
 A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for package updates.
 
+This plugin runs continuously and prints an output in the interval requested by Telegraf.
+In addition, the ouput can be triggered externally, e.g. during `apt update` to get the latest status in almost real time.
 The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
 
 
@@ -13,18 +15,20 @@ The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS
 
 Install `curl`.
 
-To make this script useful you need a way to keep your package sources up to date.
+If you want to trigger the plugin output after an `apt update`, copy [99telegraf](99telegraf) to `/etc/apt/apt.conf.d/99telegraf`.
+
+To make this plugin useful you need a way to keep your package sources up to date.
 You can use `unattended-upgrades` to run `apt update` on a regular basis.
 
 Telegraf can be configured like this:
 
 ```ini
-[[inputs.exec]]
-  command = "sh /opt/telegraf/telegraf-apt.sh"
+[[inputs.execd]]
+  command = ["/bin/sh", "/opt/telegraf/telegraf-apt.sh"]
   data_format = "influx"
 
-  interval = "1h"
-  timeout = "30s"
+  interval = "24h"
+  signal = "SIGUSR1"
 ```
 
 
