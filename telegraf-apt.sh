@@ -1,21 +1,12 @@
 #!/bin/sh
 
-apt_pid="/tmp/telegraf-apt.pid"
 apt_ltsfile="/tmp/telegraf-apt.ltsinfo"
 
 case "$1" in
     --update)
-        if [ -f "$apt_pid" ]; then
-            update_pid=$(cat "$apt_pid")
-
-            if ps -p "$update_pid" > /dev/null; then
-                kill -10 "$update_pid"
-            fi
-        fi
+        kill -USR1 "$(pgrep -f -o "$0")"
         ;;
     *)
-        echo $$ > "$apt_pid"
-
         trap exit INT
         trap "echo" USR1
 
@@ -61,6 +52,7 @@ case "$1" in
             echo "apt updates_severity=$(( release_support * 10 + updates_severity))"
 
 
+            pkill -P $$
             sleep infinity &
             wait
         done
