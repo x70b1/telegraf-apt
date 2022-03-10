@@ -15,10 +15,10 @@ The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS
 
 Install `curl`.
 
-If you want to trigger the plugin output after an `apt update`, copy [99telegraf](99telegraf) to `/etc/apt/apt.conf.d/99telegraf`.
-
 To make this plugin useful you need a way to keep your package sources up to date.
 You can use `unattended-upgrades` to run `apt update` on a regular basis.
+To trigger the plugin to collect new stats after an `apt update`, create a `Post-Invoke` configuration.
+You can copy [99telegraf](99telegraf) to `/etc/apt/apt.conf.d/99telegraf` or use it as example.
 
 Telegraf can be configured like this:
 
