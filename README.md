@@ -7,7 +7,7 @@
 A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for package updates.
 
 This plugin runs continuously and prints an output in the interval requested by Telegraf.
-In addition, the ouput can be triggered externally, e.g. during `apt update` to get the latest status in almost real time.
+In addition, the output can be triggered externally, e.g. during `apt update` to get the latest status in almost real time.
 The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
 
 
