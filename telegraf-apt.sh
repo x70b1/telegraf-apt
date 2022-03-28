@@ -46,6 +46,26 @@ case "$1" in
             echo "apt updates_severity=$(( release_support * 10 + updates_severity))"
 
 
+            if sudo -l /usr/sbin/needrestart -b >> /dev/null; then
+                needrestart_info=$(sudo needrestart -b)
+                needrestart_kernel=$(echo "$needrestart_info" | grep -c "NEEDRESTART-KSTA: 3")
+                needrestart_services=$(echo "$needrestart_info" | grep -c "NEEDRESTART-SVC")
+
+                if [ "$needrestart_kernel" -eq 1 ] && [ "$needrestart_services" -gt 0 ]; then
+                    needrestart_severity=3
+                elif [ "$needrestart_kernel" -eq 1 ]; then
+                    needrestart_severity=2
+                elif [ "$needrestart_services" -gt 0 ]; then
+                    needrestart_severity=1
+                else
+                    needrestart_severity=0
+                fi
+
+                echo "apt needrestart_services=$needrestart_services"
+                echo "apt needrestart_severity=$needrestart_severity"
+            fi
+
+
             pkill -P $$
             sleep infinity &
             wait

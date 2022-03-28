@@ -9,11 +9,12 @@ A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for 
 This plugin runs continuously and prints an output in the interval requested by Telegraf.
 In addition, the output can be triggered externally, e.g. during `apt update` to get the latest status in almost real time.
 The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
+You can make use of [needrestart](https://github.com/liske/needrestart) to check the system for outdated libaries.
 
 
 ## Configuration
 
-Install `curl`.
+Install `curl`. Also `needrestart` if you like to use it.
 
 To make this plugin useful you need a way to keep your package sources up to date.
 You can use `unattended-upgrades` to run `apt update` on a regular basis.
@@ -32,6 +33,13 @@ Telegraf can be configured like this:
 ```
 
 
+If Telegraf is able to run `needrestart` with sudo privileges, the corresponding metrics will be collected.
+
+```
+telegraf    ALL = NOPASSWD: /usr/sbin/needrestart -b
+```
+
+
 ## Output
 
 ```sh
@@ -42,6 +50,8 @@ apt debian_support=0
 apt updates_regular=0
 apt updates_security=1
 apt updates_severity=2
+apt needrestart_services=6
+apt needrestart_severity=1
 ```
 
 
@@ -98,4 +108,21 @@ Returns an integer indicator as summary.
 21  =  outdated, one or more regular updates
 22  =  outdated, one or more security updates
 23  =  outdated, one or more regular updates and one or more security updates
+```
+
+
+**needrestart_services**
+
+Returns the number of services which need to be restarted after library upgrades.
+
+
+**needrestart_severity**
+
+Returns an integer indicator as summary.
+
+```
+0   =  latest available kernel is running and no services with outdated libraries
+1   =  latest available kernel is running and one or more services with outdated libraries
+2   =  latest available kernel is not running and no services with outdated libraries
+3   =  latest available kernel is not running and one or more services with outdated libraries
 ```
