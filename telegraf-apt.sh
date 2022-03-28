@@ -1,5 +1,5 @@
 #!/bin/sh
- # shellcheck disable=SC1091
+# shellcheck disable=SC1091
 
 case "$1" in
     --update)
@@ -23,9 +23,14 @@ case "$1" in
                 release_support=2
             fi
 
+            echo "apt debian_release=\"$release_version\""
+            echo "apt debian_codename=\"$release_codename\""
+            echo "apt debian_support=$release_support"
+
 
             updates_regular=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c -v Security)
             updates_security=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c Security)
+            updates_packages=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | cut -d ' ' -f 2 | paste -s -d " ")
 
             if [ "$updates_security" -gt 0 ] && [ "$updates_regular" -gt 0 ]; then
                 updates_severity=3
@@ -37,12 +42,9 @@ case "$1" in
                 updates_severity=0
             fi
 
-
-            echo "apt debian_release=\"$release_version\""
-            echo "apt debian_codename=\"$release_codename\""
-            echo "apt debian_support=$release_support"
             echo "apt updates_regular=$updates_regular"
             echo "apt updates_security=$updates_security"
+            echo "apt updates_packages=\"$updates_packages\""
             echo "apt updates_severity=$(( release_support * 10 + updates_severity))"
 
 

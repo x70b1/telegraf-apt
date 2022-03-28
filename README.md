@@ -88,6 +88,11 @@ Returns the number of outstanding regular updates.
 Returns the number of outstanding security updates.
 
 
+**updates_packages**
+
+Returns a list of packages with outstanding updates.
+
+
 **updates_severity**
 
 Returns an integer indicator as summary.
