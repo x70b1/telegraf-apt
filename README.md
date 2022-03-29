@@ -9,7 +9,7 @@ A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for 
 This plugin runs continuously and prints an output in the interval requested by Telegraf.
 In addition, the output can be triggered externally, e.g. during `apt update` to get the latest status in almost real time.
 The Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
-You can make use of [needrestart](https://github.com/liske/needrestart) to check the system for outdated libaries.
+You can make use of [needrestart](https://github.com/liske/needrestart) to check the system for outdated libraries.
 
 
 ## Configuration
@@ -18,6 +18,7 @@ Install `curl`. Also `needrestart` if you like to use it.
 
 To make this plugin useful you need a way to keep your package sources up to date.
 You can use `unattended-upgrades` to run `apt update` on a regular basis.
+
 To trigger the plugin to collect new stats after an `apt update`, create a `Post-Invoke` configuration.
 You can copy [99telegraf](99telegraf) to `/etc/apt/apt.conf.d/99telegraf` or use it as example.
 
@@ -32,8 +33,7 @@ Telegraf can be configured like this:
   signal = "SIGUSR1"
 ```
 
-
-If Telegraf is able to run `needrestart` with sudo privileges, the corresponding metrics will be collected.
+If Telegraf is able to run `needrestart` with sudo privileges, the corresponding metrics will be collected:
 
 ```
 telegraf    ALL = NOPASSWD: /usr/sbin/needrestart -b
