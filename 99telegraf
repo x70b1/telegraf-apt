@@ -3,4 +3,5 @@ APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "0";
 
 // trigger the telegraf-apt plugin to collect new stats
-APT::Update::Post-Invoke {"sh /opt/telegraf/telegraf-apt.sh --update";
+APT::Update::Post-Invoke {"sh /opt/telegraf/telegraf-apt.sh --update"; };
+DPkg::Post-Invoke {"sh /opt/telegraf/telegraf-apt.sh --update"; };
