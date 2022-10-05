@@ -75,7 +75,6 @@ Returns the current support status of your system.
 0   =  full support with official security fixes
 1   =  LTS with limitied security support
 2   =  outdated
-3   =  unknown
 ```
 
 
@@ -114,11 +113,6 @@ Returns an integer indicator as summary.
 21  =  outdated, one or more regular updates
 22  =  outdated, one or more security updates
 23  =  outdated, one or more regular updates and one or more security updates
-
-30  =  unknown support, no updates
-31  =  unknown support, one or more regular updates
-32  =  unknown support, one or more security updates
-33  =  unknown support, one or more regular updates and one or more security updates
 ```
 
 
