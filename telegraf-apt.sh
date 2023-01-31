@@ -3,7 +3,9 @@
 
 case "$1" in
     --update)
-        kill -USR1 "$(pgrep -f -o "$0")"
+        if [ "$(systemctl is-active telegraf.service)" = "active" ]; then
+            kill -USR1 "$(pgrep -f -o "$0")" || true
+        fi
         ;;
     *)
         trap exit INT
