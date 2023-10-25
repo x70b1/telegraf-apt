@@ -1,8 +1,8 @@
 # telegraf-apt
 
-[![Codecheck](https://github.com/x70b1/telegraf-apt/workflows/Codecheck/badge.svg?branch=master)](https://github.com/x70b1/telegraf-apt/actions)
-[![GitHub contributors](https://img.shields.io/github/contributors/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/graphs/contributors)
-[![license](https://img.shields.io/github/license/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/blob/master/LICENSE)
+[![Actions](https://github.com/x70b1/telegraf-apt/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/x70b1/telegraf-apt/actions)
+[![Contributors](https://img.shields.io/github/contributors/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/graphs/contributors)
+[![License](https://img.shields.io/github/license/x70b1/telegraf-apt.svg)](https://github.com/x70b1/telegraf-apt/blob/master/LICENSE)
 
 A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian for package updates.
 
