@@ -12,27 +12,50 @@ case "$1" in
         trap "echo" USR1
 
         while true; do
-            release_version=$(cat /etc/debian_version)
-            release_codename=$(. /etc/os-release; echo "$VERSION_CODENAME" | sed 's/^[a-z]/\U&/g')
 
-            echo "apt debian_release=\"$release_version\""
-            echo "apt debian_codename=\"$release_codename\""
+            os_id=$(. /etc/os-release; echo "$ID" | sed 's/^[a-z]/\U&/g')
 
+            echo "apt os_id=\"$os_id\""
 
-            release_ltsinfo=$(curl -sf https://wiki.debian.org/LTS | grep "Debian $(echo "$release_version" | cut -d '.' -f 1)")
+            os_codename=$(. /etc/os-release; echo "$VERSION_CODENAME" | sed 's/^[a-z]/\U&/g')
 
-            if [ -n "$release_ltsinfo" ]; then
-                if echo "$release_ltsinfo" | grep -q "#98fb98"; then
-                    release_support=0
-                elif echo "$release_ltsinfo" | grep -q "#FCED77"; then
-                    release_support=1
-                else
-                    release_support=2
+            echo "apt os_codename=\"$os_codename\""
+
+            os_release=$(. /etc/os-release; echo "$VERSION_ID")
+
+            echo "apt os_release=\"$os_release\""
+
+            if [ "$os_id" = "Debian" ]; then 
+
+                release_ltsinfo=$(curl -sf https://wiki.debian.org/LTS | grep "Debian $os_release")
+
+                if [ -n "$release_ltsinfo" ]; then
+                    if echo "$release_ltsinfo" | grep -q "#98fb98"; then
+                        release_support=0
+                    elif echo "$release_ltsinfo" | grep -q "#FCED77"; then
+                        release_support=1
+                    else
+                        release_support=2
+                    fi
+
+                    echo "apt os_support=$release_support"
+                fi
+            
+            elif [ "$os_id" = "Ubuntu" ]; then 
+
+                release_ltsinfo=$(curl -sf https://changelogs.ubuntu.com/meta-release | grep -A 2 "Version: $os_release" | grep "Supported" | cut -d ' ' -f 2)
+
+                if [ -n "$release_ltsinfo" ]; then
+                    if [ "$release_ltsinfo" -eq 1 ];then
+                        release_support=0
+                    else
+                        release_support=2
+                    fi
+
+                    echo "apt os_support=$release_support"
                 fi
 
-                echo "apt debian_support=$release_support"
             fi
-
 
             updates_regular=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c -v Security)
             updates_security=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c Security)
