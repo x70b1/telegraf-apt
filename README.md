@@ -8,7 +8,8 @@ A [Telegraf](https://github.com/influxdata/telegraf) plugin to check Debian, Ubu
 
 This plugin runs continuously and prints an output in the interval requested by Telegraf.
 In addition, the output can be triggered externally, e.g. during `apt update` to get the latest status in almost real time.
-For Debian, the Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS). For Ubuntu, the meta-release changelog is queried to check the [support status](https://changelogs.ubuntu.com/meta-release).
+For Debian, the Debian wiki is queried to check the [LTS status](https://wiki.debian.org/LTS).
+For Ubuntu, the meta-release changelog is queried to check the [support status](https://changelogs.ubuntu.com/meta-release).
 You can make use of [needrestart](https://github.com/liske/needrestart) to check the system for outdated libraries.
 
 
@@ -50,11 +51,12 @@ apt os_codename="Bullseye"
 apt os_support=0
 apt updates_regular=0
 apt updates_security=1
-apt updates_packages=""
+apt updates_packages="" ?
 apt updates_severity=2
 apt needrestart_services=6
 apt needrestart_severity=1
 ```
+
 
 ## How to read
 
@@ -75,7 +77,8 @@ Returns the value of `VERSION_CODENAME` from `/etc/os-release`.
 
 **os_support**
 
-Returns the current support status of your system. Supported on Debian and Ubuntu only.
+Returns the current support status of your system.
+Supported on Debian and Ubuntu.
 
 For Debian:
 
@@ -85,14 +88,12 @@ For Debian:
 2   =  outdated
 ```
 
-For Ubuntu:
+For Ubuntu (This will not consider Ubuntu Pro support):
 
 ```
 0   =  supported
 2   =  unsupported
 ```
-
-_For Ubuntu this will not consider Ubuntu Pro licensing/extended support._
 
 
 **updates_regular**

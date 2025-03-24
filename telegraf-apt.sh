@@ -12,27 +12,21 @@ case "$1" in
         trap "echo" USR1
 
         while true; do
-
             os_id=$(. /etc/os-release; echo "$ID" | sed 's/^[a-z]/\U&/g')
-
-            echo "apt os_id=\"$os_id\""
-
             os_codename=$(. /etc/os-release; echo "$VERSION_CODENAME" | sed 's/^[a-z]/\U&/g')
-
-            echo "apt os_codename=\"$os_codename\""
-
             os_release=$(. /etc/os-release; echo "$VERSION_ID")
 
+            echo "apt os_id=\"$os_id\""
+            echo "apt os_codename=\"$os_codename\""
             echo "apt os_release=\"$os_release\""
 
             if [ "$os_id" = "Debian" ]; then 
+                debian_support=$(curl -sf https://wiki.debian.org/LTS | grep "Debian $os_release")
 
-                release_ltsinfo=$(curl -sf https://wiki.debian.org/LTS | grep "Debian $os_release")
-
-                if [ -n "$release_ltsinfo" ]; then
-                    if echo "$release_ltsinfo" | grep -q "#98fb98"; then
+                if [ -n "$debian_support" ]; then
+                    if echo "$debian_support" | grep -q "#98fb98"; then
                         release_support=0
-                    elif echo "$release_ltsinfo" | grep -q "#FCED77"; then
+                    elif echo "$debian_support" | grep -q "#FCED77"; then
                         release_support=1
                     else
                         release_support=2
@@ -40,13 +34,11 @@ case "$1" in
 
                     echo "apt os_support=$release_support"
                 fi
-            
             elif [ "$os_id" = "Ubuntu" ]; then 
+                ubuntu_support=$(curl -sf https://changelogs.ubuntu.com/meta-release | grep -A 2 "Version: $os_release" | grep "Supported" | cut -d ' ' -f 2)
 
-                release_ltsinfo=$(curl -sf https://changelogs.ubuntu.com/meta-release | grep -A 2 "Version: $os_release" | grep "Supported" | cut -d ' ' -f 2)
-
-                if [ -n "$release_ltsinfo" ]; then
-                    if [ "$release_ltsinfo" -eq 1 ];then
+                if [ -n "$ubuntu_support" ]; then
+                    if [ "$ubuntu_support" -eq 1 ];then
                         release_support=0
                     else
                         release_support=2
@@ -54,7 +46,6 @@ case "$1" in
 
                     echo "apt os_support=$release_support"
                 fi
-
             fi
 
             updates_regular=$(apt-get -qq -y --ignore-hold --allow-change-held-packages --allow-unauthenticated -s dist-upgrade | grep ^Inst | grep -c -v Security)
@@ -81,25 +72,26 @@ case "$1" in
             fi
 
 
-            if sudo -l /usr/sbin/needrestart -b >> /dev/null; then
-                needrestart_info=$(sudo needrestart -b)
-                needrestart_kernel=$(echo "$needrestart_info" | grep -c "NEEDRESTART-KSTA: 3")
-                needrestart_services=$(echo "$needrestart_info" | grep -c "NEEDRESTART-SVC")
+            if [ -f /usr/sbin/needrestart ]; then
+                if sudo -v > /dev/null 2>&1 && sudo -l /usr/sbin/needrestart -b > /dev/null 2>&1; then
+                    needrestart_info=$(sudo needrestart -b)
+                    needrestart_kernel=$(echo "$needrestart_info" | grep -c "NEEDRESTART-KSTA: 3")
+                    needrestart_services=$(echo "$needrestart_info" | grep -c "NEEDRESTART-SVC")
 
-                if [ "$needrestart_kernel" -eq 1 ] && [ "$needrestart_services" -gt 0 ]; then
-                    needrestart_severity=3
-                elif [ "$needrestart_kernel" -eq 1 ]; then
-                    needrestart_severity=2
-                elif [ "$needrestart_services" -gt 0 ]; then
-                    needrestart_severity=1
-                else
-                    needrestart_severity=0
+                    if [ "$needrestart_kernel" -eq 1 ] && [ "$needrestart_services" -gt 0 ]; then
+                        needrestart_severity=3
+                    elif [ "$needrestart_kernel" -eq 1 ]; then
+                        needrestart_severity=2
+                    elif [ "$needrestart_services" -gt 0 ]; then
+                        needrestart_severity=1
+                    else
+                        needrestart_severity=0
+                    fi
+
+                    echo "apt needrestart_services=$needrestart_services"
+                    echo "apt needrestart_severity=$needrestart_severity"
                 fi
-
-                echo "apt needrestart_services=$needrestart_services"
-                echo "apt needrestart_severity=$needrestart_severity"
             fi
-
 
             pkill -P $$
             sleep infinity &
