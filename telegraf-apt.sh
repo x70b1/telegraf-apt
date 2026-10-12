@@ -24,9 +24,9 @@ case "$1" in
                 debian_support=$(curl -sf https://wiki.debian.org/LTS | grep "Debian $os_release")
 
                 if [ -n "$debian_support" ]; then
-                    if echo "$debian_support" | grep -q "#98fb98"; then
+                    if echo "$debian_support" | grep -iq "#98fb98"; then
                         release_support=0
-                    elif echo "$debian_support" | grep -q "#FCED77"; then
+                    elif echo "$debian_support" | grep -iq "#FCED77"; then
                         release_support=1
                     else
                         release_support=2
