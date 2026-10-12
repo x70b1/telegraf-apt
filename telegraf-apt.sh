@@ -26,7 +26,7 @@ case "$1" in
                 if [ -n "$debian_support" ]; then
                     if echo "$debian_support" | grep -iq "#98fb98"; then
                         release_support=0
-                    elif echo "$debian_support" | grep -iq "#FCED77"; then
+                    elif echo "$debian_support" | grep -iq "#fced77"; then
                         release_support=1
                     else
                         release_support=2
